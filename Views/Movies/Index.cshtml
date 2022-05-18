@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "Movies list";
+}
+<div class="row">
+    @foreach(var item in Model)
+    {
+        <div class="col-md-4 col-xs-6">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header">
+                            <div class="card-text">
+                                <h5 class="card-title">
+                                    @item.Name
+                                    @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        <a class="btn btn-outline-primary float-end p-1" asp-action="Edit" asp-route-id="@item.Id">
+                                            <i class="bi bi-pencil-square" ></i>  Edit </a>
+                                    }                         
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.Picture" width="100%" alt="@item.Name">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <div class="card-text">
+                                <p><b>Category:</b> @item.Category</p>
+                            </div>
+                            <div class="card-text">
+                                <p><b>Start Date:</b> @item.StartDate.ToString("dd/MMM/yy")</p>
+                            </div>
+                            <div class="card-text">
+                                <p><b>End Date:</b> @item.EndDate.ToString("dd/MMM/yy")</p>
+                            </div>
+                            <div class="card-text">
+                               <p><b>Cinema:</b>  @item.Cinema.Name</p>
+                            </div>
+                            <div class="card-text">
+                                <p><b>Description:</b> @item.Description</p>
+                            </div>
+                            <div class="card-text">
+                                <b>Status:</b>
+                                @if(DateTime.Now > item.StartDate && DateTime.Now < item.EndDate)
+                                {
+                                    <span class="badge bg-success text-white">Available</span>
+                                }
+                                else if(DateTime.Now < item.StartDate)
+                                {
+                                    <span class="badge bg-primary text-white">Upcoming</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger text-white">Expired</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <div class="card-text">
+                                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye-fill"></i> Show details</a>
+                                <a class="btn btn-outline-success float-end" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id">
+                                    <i class="bi bi-cart-plus"></i> Add to card. Price @item.Price.ToString("c")
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    } 
+</div>
+
+@await Html.PartialAsync("_CreateItemButton", "Movies")

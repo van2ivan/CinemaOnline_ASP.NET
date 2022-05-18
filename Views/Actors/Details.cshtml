@@ -1,0 +1,29 @@
+﻿@model Actor
+@{
+    ViewData["Title"] = "Actor details";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h2>Actor details</h2>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                    <div class="form-group mb-3">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control" disabled/>
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Biography" class="control-label"></label>
+                        <input asp-for="Biography" class="form-control" disabled/>
+                        <span asp-validation-for="Biography" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <a class="btn btn-outline-primary" asp-controller="Movies" asp-action="Index">Back to movies</a>
+                    </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

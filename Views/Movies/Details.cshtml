@@ -1,0 +1,78 @@
+﻿@model Movie
+@{
+    ViewData["Title"] = "Movie details";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-center text-white bg-dark">
+                        <div class="card-text">
+                            <h2 class="card-title">@Model.Name</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@Model.Picture" alt="@Model.Name" style="width:100%" />
+                </div>
+                <div class="col-md-8 ps-5">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>Description: </b>@Model.Description
+                        </p>
+                        <p class="card-text">
+                            <b>Cinema: </b>
+                                @Model.Cinema.Name
+                        </p>
+                        <p class="card-text">
+                            <b>Company: </b>
+                                @Model.Company.Name
+                        </p>
+                        <p class="card-text">
+                            <b>Category: </b>@Model.Category
+                        </p>
+                        <p class="card-text">
+                            <b>Start date: </b>@Model.StartDate.ToString("dd/MMM/yy");
+                        </p>
+                        <div class="card-text">
+                            <b>End date: </b>@Model.EndDate.ToString("dd/MMM/yy");
+                        </div>
+                        <div class="card-text mb-2">
+                            Status: 
+                                 @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
+                                    {
+                                        <span class="badge bg-success text-white">Available</span>
+                                    }
+                                    else if (DateTime.Now > Model.EndDate)
+                                    {
+                                        <span class="badge bg-danger text-white">Expired</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary text-white">Upcoming</span>
+                                    }
+                                    <br/>
+                        </div>
+                        <div class="card-text">
+                            <b>Actors:</b>
+                            <div class="row">
+                                @foreach (var actor in Model.Actors_Movies)
+                                {
+                                    // Doesn`t work
+                                    <div class="column">
+                                        <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId">@actor.Actor.FullName</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>              
+                </div>
+                <div class="card-footer">
+                        <a class="btn btn-outline-primary" asp-action="Index">Go back</a>
+                        <a class="btn btn-outline-success float-end" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">Add to cart. Price @Model.Price.ToString("c")</a>
+                    </div>
+            </div>
+        </div>  
+    </div>
+</div>
